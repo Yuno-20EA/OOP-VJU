@@ -2,17 +2,46 @@
 
 using namespace std;
 
-int main() {
-    for (int i = 0;i<2;i++) {
-        for (int j = 0;j<1;j++) {
-            cout << "+ - - - -";
-            cout << " +\n";
+void drawHorizontalLine(int cols, int cellWidth) {
+    for (int i = 0; i < cols; i++) {
+        cout << "+";
+        for (int j = 0; j < cellWidth; j++) {
+            cout << " -";
         }
-        for (int k = 0;k<4;k++) {
-            cout << "|        ";
-            cout << " |\n";
-        }
+        cout << " ";
     }
-    cout << "+ - - - -";
-    cout << " +\n";
+    cout << "+\n";
+}
+
+void drawVerticalLines(int cols, int cellWidth, int cellHeight) {
+    for (int h = 0; h < cellHeight; h++) {
+        for (int i = 0; i < cols; i++) {
+            cout << "|";
+            for (int j = 0; j < cellWidth; j++) {
+                cout << "  ";
+            }
+            cout << " ";
+        }
+        cout << "|\n";
+    }
+}
+
+int main() {
+    int rows, cols;
+    int cellWidth = 4;
+    int cellHeight = 4;
+
+    cout << "Nhap so hang: ";
+    cin >> rows;
+    cout << "Nhap so cot: ";
+    cin >> cols;
+
+    for (int r = 0; r < rows; r++) {
+        drawHorizontalLine(cols, cellWidth);
+        drawVerticalLines(cols, cellWidth, cellHeight);
+    }
+
+    drawHorizontalLine(cols, cellWidth);
+
+    return 0;
 }
