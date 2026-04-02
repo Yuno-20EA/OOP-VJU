@@ -30,10 +30,10 @@ int main() {
         }
     }
     cout << "\nDoan thang dai nhat: ";
-    max.display();
+    maxLine.display();
     cout << endl;
 
     cout << "Doan thang ngan nhat: ";
-    min.display();
+    minLine.display();
     cout << endl;
 }

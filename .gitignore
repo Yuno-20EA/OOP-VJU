@@ -1,0 +1,15 @@
+# IDE rác (CLion/JetBrains)
+.idea/
+cmake-build-debug/
+cmake-build-release/
+
+# File thực thi và rác hệ thống
+*.exe
+*.obj
+*.o
+*.out
+.DS_Store
+
+# Các file tạm khác
+*.swp
+*.patch
