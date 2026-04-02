@@ -4,7 +4,7 @@
 ---
 
 ### 👤 Thông tin sinh viên
-* **Họ và tên:** Hoàng Hải
+* **Họ và tên:** Nguyễn Hoàng Hải
 * **Mã sinh viên:** 25112038
 * **Email:** 25112038@vju.st.ac.vn
 * **GitHub:** [Yuno-20EA](https://github.com/Yuno-20EA)
