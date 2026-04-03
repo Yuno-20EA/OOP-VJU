@@ -40,22 +40,22 @@ public:
     void setLuong_max(double Luong_max) {
         this->Luong_max = Luong_max;
     }
-    string getName() const { // Thêm const ở đây
+    string getName() const { 
         return this->name;
     }
-    int getNamsinh() const { // Thêm const ở đây
+    int getNamsinh() const {
         return this->nam_sinh;
     }
-    string getGender() const { // Thêm const ở đây
+    string getGender() const { 
         return this->gender;
     }
-    string getAddress() const { // Thêm const ở đây
+    string getAddress() const {
         return this->address;
     }
-    double getHe_so_luong() const { // Thêm const để hàm tinhLuong() gọi được
+    double getHe_so_luong() const { 
         return this->He_so_luong;
     }
-    double getLuong_max() const { // Bổ sung hàm này vì code dưới có dùng
+    double getLuong_max() const { 
         return this->Luong_max;
     }
     virtual double tinhLuong() const {
