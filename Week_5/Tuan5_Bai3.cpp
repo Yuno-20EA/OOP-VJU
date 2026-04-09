@@ -1,64 +1,33 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <string>
 
 using namespace std;
 
 class CanBo {
-private:
+protected:
     string name;
     int age;
     string gender;
     string address;
+
 public:
-    CanBo(string name, int age, string gender, string address) {
-        this->name = name;
-        this->age = age;
-        this->gender = gender;
-        this->address = address;
+    CanBo(string name, int age, string gender, string address)
+        : name(name), age(age), gender(gender), address(address) {}
+
+    string getName() const { return name; }
+    int getAge() const { return age; }
+    string getGender() const { return gender; }
+    string getAddress() const { return address; }
+
+    virtual void display() const {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Gender: " << gender << endl;
+        cout << "Address: " << address << endl;
     }
-    void setName(string name) {
-        this->name = name;
-    }
-    void setAge(int age) {
-        this->age = age;
-    }
-    void setGender(string gender) {
-        this->gender = gender;
-    }
-    void setAddress(string address) {
-        this->address = address;
-    }
-    string getName() {
-        if (name == "") {
-            cout << "Ten khong duoc de trong" << endl;
-            return "";
-        }
-        else {
-            return name;
-        }
-    }
-    int getAge() {
-        if (age < 0) {
-            cout << "tuoi khong the am duoc vui long nhap lai" << endl;
-            return 0;
-        }
-        else {
-            return age;
-        }
-    }
-    string getGender() {
-        return gender;
-    }
-    string getAddress() {
-        return address;
-    }
-    virtual void display() {
-        cout << "Name: "<< name << endl;
-        cout << "Age: "<< age << endl;
-        cout << "Gender: "<< gender << endl;
-        cout << "Address: "<< address << endl;
-    }
+
     virtual ~CanBo() = default;
 };
 
@@ -66,22 +35,10 @@ class CongNhan : public CanBo {
 private:
     int level;
 public:
-    CongNhan(string name, int age,string gender,string address, int level) : CanBo(name, age, gender,address) {
-        this->level = level;
-    }
-    void setLevel(int const level) {
-        this->level = level;
-    }
-    int getLevel() {
-        if (level < 1 || level > 10) {
-            cout << "khong thoa man " << endl;
-            return 0 ;
-        }
-        else {
-            return level;
-        }
-    }
-    void display() {
+    CongNhan(string name, int age, string gender, string address, int level)
+        : CanBo(name, age, gender, address), level(level) {}
+
+    void display() const override {
         CanBo::display();
         cout << "Level: " << level << endl;
     }
@@ -91,16 +48,10 @@ class KySu : public CanBo {
 private:
     string fieldName;
 public:
-    KySu(string name,int age,string gender,string address,string fieldName) : CanBo(name, age, gender, address) {
-        this->fieldName = fieldName;
-    }
-    void setFieldName(string fieldName) {
-        this->fieldName = fieldName;
-    }
-    string getFieldName() {
-        return fieldName;
-    }
-    void display() {
+    KySu(string name, int age, string gender, string address, string fieldName)
+        : CanBo(name, age, gender, address), fieldName(fieldName) {}
+
+    void display() const override {
         CanBo::display();
         cout << "Field Name: " << fieldName << endl;
     }
@@ -110,16 +61,10 @@ class NhanVien : public CanBo {
 private:
     string job;
 public:
-    NhanVien(string name,int age,string gender,string address,string job) : CanBo(name,age,gender,address) {
-        this->job = job;
-    }
-    void setJob(string job) {
-        this->job = job;
-    }
-    string getJob() {
-        return job;
-    }
-    void display() {
+    NhanVien(string name, int age, string gender, string address, string job)
+        : CanBo(name, age, gender, address), job(job) {}
+
+    void display() const override {
         CanBo::display();
         cout << "Job: " << job << endl;
     }
@@ -128,13 +73,15 @@ public:
 class QLCB {
 private:
     vector<unique_ptr<CanBo>> dsCanBo;
+
 public:
     void addCanBo() {
-        string name,gender,address,adding;
-        int age,loai;
-        cout << "\n______Them Can Bo Moi______ "<<endl;
+        string name, gender, address, adding;
+        int age, loai;
+
+        cout << "\n______Them Can Bo Moi______ " << endl;
         cout << "1.Cong nhan || 2.Ky su || 3.Nhan vien" << endl;
-        cout << "Choose your choose : " ;
+        cout << "Choose: ";
         if (!(cin >> loai)) {
             cin.clear();
             cin.ignore(1000, '\n');
@@ -142,56 +89,60 @@ public:
         }
         cin.ignore();
 
-        cout << "Name : "; getline(cin,name);
-        cout << "Age: "; cin>>age;cin.ignore();
+        cout << "Name: "; getline(cin, name);
+        if (name.empty()) { cout << "Ten khong duoc de trong!\n"; return; }
+
+        cout << "Age: ";
+        if (!(cin >> age) || age < 0) {
+            cout << "Tuoi khong hop le!\n";
+            cin.clear(); cin.ignore(1000, '\n');
+            return;
+        }
+        cin.ignore();
+
         cout << "Gender: "; getline(cin, gender);
-        cout << "Address : "; getline(cin, address);
+        cout << "Address: "; getline(cin, address);
 
         if (loai == 1) {
             int bac;
-            cout << "Bac 1->10 : "; cin >> bac; cin.ignore();
-            dsCanBo.push_back(
-                make_unique<CongNhan>(name, age, gender,address, bac)
-            );
+            cout << "Level (1-10): "; cin >> bac;
+            if (bac < 1 || bac > 10) { cout << "Bac khong hop le!\n"; return; }
+            dsCanBo.push_back(make_unique<CongNhan>(name, age, gender, address, bac));
         }
         else if (loai == 2) {
-            cout << "Nganh chuyen mon: ";getline(cin,adding);
-            dsCanBo.push_back(
-                make_unique<KySu>(name,age, gender, address, adding)
-                );
+            cout << "Nganh chuyen mon: "; cin.ignore(); getline(cin, adding);
+            dsCanBo.push_back(make_unique<KySu>(name, age, gender, address, adding));
         }
         else if (loai == 3) {
-            cout << "cong viec la: ";getline(cin,adding);
-            dsCanBo.push_back(
-                make_unique<NhanVien>(name, age, gender, address, adding));
+            cout << "Cong viec: "; cin.ignore(); getline(cin, adding);
+            dsCanBo.push_back(make_unique<NhanVien>(name, age, gender, address, adding));
         }
         else {
-            cout << "Khong hop le.Hay thu lai!" << endl;
+            cout << "Khong hop le!" << endl;
         }
     }
+
     void findCanBo() {
         string tuKhoa;
-        cout << "\n  Nhập họ tên cần tìm: ";
+        cout << "\nNhập họ tên cần tìm: ";
         getline(cin, tuKhoa);
 
         bool found = false;
         for (const auto& cb : dsCanBo) {
             if (cb->getName() == tuKhoa) {
-                cout << endl;
-                found = true;
+                if (!found) cout << "\n--- KET QUA TIM KIEM ---" << endl;
                 cb->display();
+                cout << "------------------------" << endl;
+                found = true;
             }
         }
-        if (!found) {
-            cout << "khong tim thay can bo co ten nhu nay.Xin vui long thu lai!" << endl;
-        }
+        if (!found) cout << "Khong tim thay can bo nay!" << endl;
     }
+
     void display() {
         if (dsCanBo.empty()) {
-            cout << "\n  Danh sach trong!" << endl;
-            return ;
-        }
-        else {
+            cout << "\nDanh sach trong!" << endl;
+        } else {
             cout << "\n--- DANH SACH CAN BO ---" << endl;
             for (const auto& cb : dsCanBo) {
                 cb->display();
@@ -203,13 +154,9 @@ public:
     void runcase() {
         int choice;
         do {
-            cout << "-------QUAN LI DANH SACH CAN BO-------" << endl;
-            cout << " ___________________________________" << endl;
-            cout << "||    1.THEM MOI CAN BO             ||" << endl;
-            cout << "||    2.TIM KIEM CAN BO THEO TEN    ||" << endl;
-            cout << "||    3.IN DANH SACH QUA MAN HINH   ||" << endl;
-            cout << "||    4.THOAT KHOI CHUONG TRINH     ||" << endl;
-            cout << " ___________________________________" << endl;
+            cout << "\n-------QUAN LI DANH SACH CAN BO-------" << endl;
+            cout << "1.THEM MOI | 2.TIM KIEM | 3.IN DANH SACH | 4.THOAT" << endl;
+            cout << "Selection: ";
             if (!(cin >> choice)) {
                 cout << "Vui long chi nhap so!" << endl;
                 cin.clear();
@@ -218,17 +165,18 @@ public:
             }
             cin.ignore();
             switch (choice) {
-                case 1: addCanBo();   break;
-                case 2: findCanBo();   break;
+                case 1: addCanBo(); break;
+                case 2: findCanBo(); break;
                 case 3: display(); break;
                 case 4: cout << "BAIBAI!" << endl; break;
-                default: cout << " INVALID!!!!!" << endl;
+                default: cout << "INVALID!!!!!" << endl;
             }
         } while (choice != 4);
     }
 };
 
 int main() {
-    QLCB cb;
-    cb.runcase();
+    QLCB ql;
+    ql.runcase();
+    return 0;
 }
