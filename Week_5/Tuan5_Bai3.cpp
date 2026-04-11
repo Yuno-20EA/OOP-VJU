@@ -21,6 +21,10 @@ public:
         this->name = name;
     }
     void setAge(int age) {
+        if (age < 0) {
+            cout << "tuoi khong the am duoc vui long nhap lai" << endl;
+            return;
+        }
         this->age = age;
     }
     void setGender(string gender) {
@@ -39,13 +43,7 @@ public:
         }
     }
     int getAge() {
-        if (age < 0) {
-            cout << "tuoi khong the am duoc vui long nhap lai" << endl;
-            return 0;
-        }
-        else {
-            return age;
-        }
+        return age;
     }
     string getGender() {
         return gender;
